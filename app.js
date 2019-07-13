@@ -1,23 +1,46 @@
-const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
+const Shema = mongoose.Schema;
+
+let GameShema = new Shema({
+    name: {
+        type: String,
+        required: true,
+        minlength: 1,
+        maxlength: 20
+    },
+    platform: {
+        type: String,
+        required: true,
+        minlength: 2,
+        maxlength: 30
+    },
+    developers: {
+        enum: ['[Sidhe Interactive]', '[Targem Games]', '[Legend Studio]', '[Ubisoft Montpellier]', '[id Software]']
+    },
+    price: {
+        type: Number,
+        min: 0,
+        default: 0
+    }
+});
 
 class Game {
     constructor(name, platform, developer, genre, price) {
         this.name = name;
         this.platform = platform;
         this.developer = developer;
-        this.genre = genre;
         this.price = price;
     }
 }
 const games = [
-    new Game('Shatter', 'PC', '[Sidhe Interactive]', 'Action', 10),
-    new Game('Clutch', 'PC', '[Targem Games]', 'Racing', 10),
-    new Game('Asteria', 'PC', '[Legend Studio]', 'Action', 10),
-    new Game('Zombi', 'Playstation 4', '[Ubisoft Montpellier]', 'First Person Shooter', 20),
-    new Game('Doom', 'Playstation 4', '[id Software]', 'First Person Shooter', 20)
+    new Game('Shatter', 'PC', '[Sidhe Interactive]', 10),
+    new Game('Clutch', 'PC', '[Targem Games]', 10),
+    new Game('Asteria', 'PC', '[Legend Studio]', 10),
+    new Game('Zombi', 'Playstation 4', '[Ubisoft Montpellier]', 20),
+    new Game('Doom', 'Playstation 4', '[id Software]', 20)
 ];
 
-(async function(){
+(async function () {
     const client = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true });
     const db = client.db('gamesdb');
     const coll = await db.collection('games');
@@ -35,7 +58,7 @@ const games = [
     });*/
     //const sortByGenre = await coll.find().sort({_genre: 1}).toArray();  //getting sorted by genre
     //console.log(sortByGenre);
-    const delByPlatform = await coll.deleteMany({_platform: 'Playstation 4'});
+    const delByPlatform = await coll.deleteMany({ _platform: 'Playstation 4' });
     console.log(delByPlatform.result);
-    client.close();    
+    client.close();
 }());
