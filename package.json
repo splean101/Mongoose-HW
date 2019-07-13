@@ -1,0 +1,22 @@
+{
+  "name": "mongoose-hw",
+  "version": "1.0.0",
+  "description": "Задание №1.\r Создайте схему GameSchema со следующим описанием свойств:\r •\tname – строка, обязательное, длина от 1 до 20 символов\r •\tplatform – строка, обязательное, длина от 2 до 30 символов\r •\tdevelopers – массив строк\r •\tprice – число, положительное, по умолчанию 0\r Создайте модель с названием Game на основе схемы GameSchema.\r Добавьте в модель Game, объекты со следующих содержимым:\r name\tplatform\tdevelopers\tprice\r Shatter\tPC\t[Sidhe Interactive]\t10\r Clutch\tPC\t[Targem Games]\t10\r Asteria\tPC\t[Legend Studio]\t10\r Zombi\tPlaystation 4\t[Ubisoft Montpellier]\t20\r Doom\tPlaystation 4\t[id Software]\t20",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/splean101/Mongoose-HW.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/splean101/Mongoose-HW/issues"
+  },
+  "homepage": "https://github.com/splean101/Mongoose-HW#readme",
+  "dependencies": {
+    "mongodb": "^3.2.7"
+  }
+}
