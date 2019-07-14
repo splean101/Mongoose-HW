@@ -15,6 +15,7 @@ let GameShema = new Shema({
         maxlength: 30
     },
     developers: {
+        type: String,
         enum: ['[Sidhe Interactive]', '[Targem Games]', '[Legend Studio]', '[Ubisoft Montpellier]', '[id Software]']
     },
     price: {
@@ -22,13 +23,14 @@ let GameShema = new Shema({
         min: 0,
         default: 0
     }
-});
+}, { versionKey: false });
+let GameModel = mongoose.model('Game', GameShema)
 
 class Game {
-    constructor(name, platform, developer, genre, price) {
+    constructor(name, platform, developers, price) {
         this.name = name;
         this.platform = platform;
-        this.developer = developer;
+        this.developers = developers;
         this.price = price;
     }
 }
@@ -41,24 +43,20 @@ const games = [
 ];
 
 (async function () {
-    const client = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true });
-    const db = client.db('gamesdb');
-    const coll = await db.collection('games');
-    //const res = await coll.insertMany(games); //adding all documents
+    const client = await mongoose.connect('mongodb://localhost:27017/gamesdb', { useNewUrlParser: true });
+    //const res = await GameModel.create(games); //adding all documents
     //console.log(res);
-    //const updShatter = await coll.updateOne({_name: 'Shatter'}, {$set: {_price: 15}}); //updating price
-    //const updAsteria = await coll.updateOne({_name: 'Asteria'}, {$set: {_price: 5}}); //updating price
-    //const updDoom = await coll.updateOne({_name: 'Doom'}, {$set: {_price: 40}}); //updating price
-    //const consoleAll = await coll.find().toArray(); //consoling all documents
+    //const updShatter = await GameModel.updateOne({name: 'Shatter'}, {price: 15}); //updating price
+    //const updAsteria = await GameModel.updateOne({name: 'Asteria'}, {price: 5}); //updating price
+    //const updDoom = await GameModel.updateOne({name: 'Doom'}, {price: 40}); //updating price
+    //const consoleAll = await GameModel.find(); //consoling all documents
     //console.log(consoleAll);
-    //const getAsteria = await coll.findOne({_name: 'Asteria'}); //getting by name
+    //const getAsteria = await GameModel.findOne({name: 'Asteria'}); //getting by name
     //console.log(getAsteria);
-    /*const getAllName = await coll.find().forEach(res => {  //getting all names
-        if(res._name) console.log(res._name);
-    });*/
-    //const sortByGenre = await coll.find().sort({_genre: 1}).toArray();  //getting sorted by genre
-    //console.log(sortByGenre);
-    const delByPlatform = await coll.deleteMany({ _platform: 'Playstation 4' });
-    console.log(delByPlatform.result);
-    client.close();
+    //const getAllName = await GameModel.find();
+    //getAllName.forEach(res => {  //getting all names
+    //    if (res.name) console.log(res.name);
+    //});
+    const delByPlatform = await GameModel.deleteMany({ platform: 'Playstation 4' });
+    client.disconnect();
 }());
